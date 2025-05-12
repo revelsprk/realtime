@@ -1,18 +1,28 @@
 // app/articles/[id]/page.tsx
-
 import { supabase } from '@/lib/supabase'
 import Image from 'next/image'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 
-// ✅ Props 型（params が注入される）
+// ✅ 型注釈：params はこの形で渡される
 type Props = {
   params: {
     id: string
   }
 }
 
-// ✅ 記事ページ本体
+// ✅ 静的生成対象のパスを生成（型を明示）
+export async function generateStaticParams(): Promise<Array<{ id: string }>> {
+  const { data, error } = await supabase.from('articles').select('id')
+
+  if (error || !data) return []
+
+  return data.map((article) => ({
+    id: article.id.toString(),
+  }))
+}
+
+// ✅ ページ本体
 export default async function ArticleDetail({ params }: Props) {
   const { data, error } = await supabase
     .from('articles')
@@ -40,15 +50,4 @@ export default async function ArticleDetail({ params }: Props) {
       </div>
     </div>
   )
-}
-
-// ✅ ここが重要！静的生成用の params を返す
-export async function generateStaticParams() {
-  const { data, error } = await supabase.from('articles').select('id')
-
-  if (error || !data) return []
-
-  return data.map((article) => ({
-    id: article.id.toString(), // id は string 型として渡す
-  }))
 }
