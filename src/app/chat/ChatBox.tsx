@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { FiUpload } from 'react-icons/fi';
 import Image from 'next/image';
+import Link from 'next/link';
 
 type Message = {
   id: string
@@ -108,8 +109,8 @@ export default function ChatBox() {
 
   return (
     <div className="max-w-md mx-auto h-screen flex flex-col bg-gray-50 md:border-l md:border-r overflow-hidden">
-      <header className="bg-blue-600 text-white text-xl font-bold py-4 px-6 shadow-md sticky top-0">
-        MukakinTV
+      <header className="bg-blue-600 py-4 px-6 shadow-md sticky top-0 flex items-center">
+        <Link href="/"><p className="text-white text-xl font-bold">MukakinTV</p></Link>
       </header>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
