@@ -63,9 +63,9 @@ export default function ChatBox() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto h-screen flex flex-col bg-gray-100">
-      <header className="bg-blue-600 text-white text-xl font-bold py-4 px-6 shadow">
-        リアルタイムチャット
+    <div className="max-w-md mx-auto h-screen flex flex-col bg-gray-50 md:border-l md:border-r overflow-hidden">
+      <header className="bg-blue-600 text-white text-xl font-bold py-4 px-6 shadow-md sticky top-0">
+        MukakinTV
       </header>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-3">
@@ -77,13 +77,13 @@ export default function ChatBox() {
             }`}
           >
             <div
-              className={`max-w-xs break-words px-4 py-2 rounded-lg shadow ${
+              className={`max-w-xs break-words px-4 py-2 rounded-lg shadow-sm ${
                 msg.username === username
                   ? 'bg-blue-500 text-white'
-                  : 'bg-white text-gray-800'
+                  : 'bg-white'
               }`}
             >
-              <div className="text-xs font-semibold opacity-70 mb-1">
+              <div className="text-sm font-semibold opacity-50 mb-1">
                 {msg.username}
               </div>
               <div>{msg.content}</div>
@@ -97,14 +97,14 @@ export default function ChatBox() {
         <input
           type="text"
           placeholder="名前"
-          className="border px-3 py-2 rounded w-full sm:w-1/4"
+          className="border px-4 py-2 rounded-md w-full sm:w-1/4 outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="text"
           placeholder="メッセージを入力"
-          className="border px-3 py-2 rounded flex-1"
+          className="border px-4 py-2 rounded-md flex-1 outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={(e) => {
@@ -113,7 +113,7 @@ export default function ChatBox() {
         />
         <button
           onClick={sendMessage}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 duration-200 font-bold whitespace-nowrap outline-none duration-200 focus:bg-blue-700"
         >
           送信
         </button>
