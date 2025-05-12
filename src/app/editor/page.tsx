@@ -4,6 +4,8 @@ import { useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import ReactMarkdown from 'react-markdown'
 import { FiUpload } from 'react-icons/fi'
+import Link from 'next/link'
+import Image from 'next/image'
 
 export default function MarkdownEditor() {
   const [title, setTitle] = useState('')
@@ -56,19 +58,21 @@ export default function MarkdownEditor() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Markdown記事投稿</h1>
-
+    <div className="max-w-md md:mx-auto mb-8 mx-4">
+                  <header className="flex justify-center bg-white sticky top-0 py-4">
+        <Link href="/"><Image src="/logo.svg" alt='Mukakin TV' width={100} height={100} className="w-48 h-fit select-none" /></Link>
+      </header>
+      <h1 className="text-xl font-bold my-2">Markdown Editor</h1>
       <input
         type="text"
         placeholder="タイトル"
-        className="w-full border p-2 mb-4 rounded"
+        className="w-full border px-4 py-2 rounded-md outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <div className="flex gap-4 mb-4">
-        <button onClick={handleUploadClick} className="flex items-center gap-2 px-4 py-2 bg-gray-200 rounded">
+      <div className="flex gap-4 mb-8">
+        <button onClick={handleUploadClick} className="flex items-center gap-2 px-4 py-2 border rounded-md shadow-sm w-full justify-center mt-2">
           <FiUpload />
           画像アップロード
         </button>
@@ -82,7 +86,7 @@ export default function MarkdownEditor() {
       </div>
 
       <textarea
-        className="w-full h-60 border p-2 rounded mb-4"
+        className="w-full h-64 border p-4 rounded-md mb-2 outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Markdownを入力..."
@@ -90,13 +94,13 @@ export default function MarkdownEditor() {
 
       <button
         onClick={handleSubmit}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 duration-200 font-bold whitespace-nowrap outline-none duration-200 focus:bg-blue-700 w-full"
       >
         投稿
       </button>
 
-      <h2 className="text-xl font-semibold mt-8">プレビュー</h2>
-      <div className="prose max-w-none mt-4 bg-white p-4 border rounded">
+      <h2 className="text-xl font-semibold mt-8">Preview</h2>
+      <div className="prose max-w-none mt-2 bg-white p-4 border rounded">
         <ReactMarkdown>{content}</ReactMarkdown>
       </div>
     </div>

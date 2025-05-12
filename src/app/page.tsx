@@ -8,7 +8,7 @@ export default function Home() {
       <h1 className="text-5xl font-bold drop-shadow-sm">MukakinTV</h1>
       <div className="mt-4 flex max-w-md gap-2 flex-wrap w-fit">
         <Link href="/chat"><p className="px-4 py-2 rounded-full bg-white text-blue-600 shadow-md hover:shadow-lg duration-200 hover:translate-y-[-6px] font-bold">Realtime Chat</p></Link>
-        <Link href="/editor"><p className="px-4 py-2 rounded-full bg-white text-blue-600 shadow-md hover:shadow-lg duration-200 hover:translate-y-[-6px] font-bold">Markdown Article Editor</p></Link>
+        <Link href="/articles"><p className="px-4 py-2 rounded-full bg-white text-blue-600 shadow-md hover:shadow-lg duration-200 hover:translate-y-[-6px] font-bold">Articles</p></Link>
       </div>
     </main>
   )
