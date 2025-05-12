@@ -2,12 +2,15 @@
 
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
+import { FiUpload } from 'react-icons/fi'
+import Image from 'next/image'
 
 type Message = {
   id: string
   username: string
   content: string
   inserted_at: string
+  image_url?: string
 }
 
 export default function ChatBox() {
@@ -15,6 +18,7 @@ export default function ChatBox() {
   const [username, setUsername] = useState('')
   const [content, setContent] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [file, setFile] = useState<File | null>(null)
 
   useEffect(() => {
     fetchMessages()
@@ -48,19 +52,49 @@ export default function ChatBox() {
   }
 
   async function sendMessage() {
-    if (!content || !username) return
-
+    if (!username || (!content && !file)) return
+  
+    let imageUrl = null
+  
+    if (file) {
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Date.now()}.${fileExt}`
+      const filePath = `${username}/${fileName}`
+  
+      const { error: uploadError } = await supabase.storage
+        .from('chat-images') // ← バケット名
+        .upload(filePath, file)
+  
+      if (uploadError) {
+        console.error('Upload error:', uploadError.message)
+        alert('画像のアップロードに失敗しました')
+        return
+      }
+  
+      const { data: imageData } = supabase.storage
+        .from('chat-images')
+        .getPublicUrl(filePath)
+  
+      imageUrl = imageData?.publicUrl || null
+    }
+  
     const { error } = await supabase.from('messages').insert([
-      { username, content }
+      {
+        username,
+        content,
+        image_url: imageUrl,
+      },
     ])
-
+  
     if (error) {
       console.error('送信エラー:', error.message)
       alert('送信に失敗しました')
     } else {
       setContent('')
+      setFile(null)
     }
   }
+  
 
   return (
     <div className="max-w-md mx-auto h-screen flex flex-col bg-gray-50 md:border-l md:border-r overflow-hidden">
@@ -83,10 +117,18 @@ export default function ChatBox() {
                   : 'bg-white'
               }`}
             >
-              <div className="text-sm font-semibold opacity-50 mb-1">
+              <div className="text-sm font-semibold opacity-50">
                 {msg.username}
               </div>
-              <div>{msg.content}</div>
+              <div>{msg.content &&(<p className="mt-1">{msg.content}</p>)}
+              {msg.image_url && (
+  <Image
+    src={msg.image_url}
+    alt="uploaded" width={100} height={100}
+    className="rounded-md w-64 mt-1"
+  />
+)}
+              </div>
             </div>
           </div>
         ))}
@@ -97,20 +139,32 @@ export default function ChatBox() {
         <input
           type="text"
           placeholder="名前"
-          className="border px-4 py-2 rounded-md w-full sm:w-1/4 outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
+          className="sm:w-16 border px-4 py-2 rounded-md w-full outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="text"
           placeholder="メッセージを入力"
-          className="border px-4 py-2 rounded-md flex-1 outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
+          className="w-full border px-4 py-2 rounded-md flex-1 outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === 'Enter') sendMessage()
           }}
         />
+<label className="cursor-pointer flex items-center text-blue-600 duration-200 h-11 aspect-square border rounded-md justify-center">
+  <FiUpload size={16} />
+  <input
+    type="file"
+    accept="image/*"
+    onChange={(e) => {
+      const selectedFile = e.target.files?.[0]
+      if (selectedFile) setFile(selectedFile)
+    }}
+    className="hidden"
+  />
+</label>
         <button
           onClick={sendMessage}
           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 duration-200 font-bold whitespace-nowrap outline-none duration-200 focus:bg-blue-700"
