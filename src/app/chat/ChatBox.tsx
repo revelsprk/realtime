@@ -151,7 +151,7 @@ export default function ChatBox() {
         <input
           type="text"
           placeholder="名前"
-          className="w-16 border px-4 py-2 rounded-md w-full outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
+          className="max-w-16 border px-4 py-2 rounded-md w-full outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
