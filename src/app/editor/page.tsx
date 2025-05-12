@@ -3,9 +3,8 @@
 import { useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import ReactMarkdown from 'react-markdown'
-import { FiUpload } from 'react-icons/fi'
+import { FiHelpCircle, FiHome, FiUpload } from 'react-icons/fi'
 import Link from 'next/link'
-import Image from 'next/image'
 
 export default function MarkdownEditor() {
   const [title, setTitle] = useState('')
@@ -58,21 +57,22 @@ export default function MarkdownEditor() {
   }
 
   return (
-    <div className="max-w-md md:mx-auto mb-8 mx-4">
-                  <header className="flex justify-center bg-white sticky top-0 py-4">
-        <Link href="/"><Image src="/logo.svg" alt='Mukakin TV' width={100} height={100} className="w-48 h-fit select-none" /></Link>
+    <div className="max-w-md md:mx-auto my-8 mx-4">
+      <header className="flex items-center bg-white mb-4">
+        <Link href="/" className="rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHome /></div></Link>
+        <Link href="/" className="ml-auto rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHelpCircle /></div></Link>
       </header>
-      <h1 className="text-xl font-bold my-2">Markdown Editor</h1>
+      <h1 className="text-2xl font-bold mb-2">Markdown Editor</h1>
       <input
         type="text"
         placeholder="タイトル"
-        className="w-full border px-4 py-2 rounded-md outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
+        className="mb-2 w-full border px-4 py-2 rounded-md outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
 
-      <div className="flex gap-4 mb-8">
-        <button onClick={handleUploadClick} className="flex items-center gap-2 px-4 py-2 border rounded-md shadow-sm w-full justify-center mt-2">
+      <div className="flex mb-6">
+        <button onClick={handleUploadClick} className="flex items-center gap-2 px-4 py-2 border rounded-md shadow-sm w-full justify-center outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400 whitespace-nowrap">
           <FiUpload />
           画像アップロード
         </button>

@@ -41,7 +41,7 @@ export default function ArticleList() {
       </div>
       <ul className="space-y-4">
         {articles.map((article) => (
-          <li key={article.id} className="border p-4 rounded-md hover:bg-gray-50 duration-200">
+          <li key={article.id} className="border p-4 rounded-md hover:bg-gray-50 duration-200 shadow-sm">
             <Link href={`/articles/${article.id}`}>
               <p className="text-lg font-semibold">{article.title}</p>
               <p className="text-sm text-gray-400">
