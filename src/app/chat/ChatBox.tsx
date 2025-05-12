@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
-import { supabase } from '@/lib/supabase'
-import { FiUpload } from 'react-icons/fi'
-import Image from 'next/image'
+import { useEffect, useState, useRef } from 'react';
+import { supabase } from '@/lib/supabase';
+import { FiUpload } from 'react-icons/fi';
+import Image from 'next/image';
 
 type Message = {
   id: string
@@ -19,6 +19,16 @@ export default function ChatBox() {
   const [content, setContent] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const [file, setFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  function handleButtonClick() {
+    fileInputRef.current?.click()
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selectedFile = e.target.files?.[0]
+    if (selectedFile) setFile(selectedFile)
+  }
 
   useEffect(() => {
     fetchMessages()
@@ -117,7 +127,7 @@ export default function ChatBox() {
                   : 'bg-white'
               }`}
             >
-              <div className="text-sm font-semibold opacity-50">
+              <div className="text-sm font-semibold opacity-50 select-none">
                 {msg.username}
               </div>
               <div>{msg.content &&(<p className="mt-1">{msg.content}</p>)}
@@ -125,7 +135,7 @@ export default function ChatBox() {
   <Image
     src={msg.image_url}
     alt="uploaded" width={100} height={100}
-    className="rounded-md w-64 mt-1"
+    className="rounded-md w-64 mt-1 select-none"
   />
 )}
               </div>
@@ -136,10 +146,11 @@ export default function ChatBox() {
       </div>
 
       <footer className="p-4 bg-white border-t flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-row gap-2">
         <input
           type="text"
           placeholder="名前"
-          className="sm:w-16 border px-4 py-2 rounded-md w-full outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
+          className="w-16 border px-4 py-2 rounded-md w-full outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -153,18 +164,21 @@ export default function ChatBox() {
             if (e.key === 'Enter') sendMessage()
           }}
         />
-<label className="cursor-pointer flex items-center text-blue-600 duration-200 h-11 aspect-square border rounded-md justify-center">
-  <FiUpload size={16} />
-  <input
-    type="file"
-    accept="image/*"
-    onChange={(e) => {
-      const selectedFile = e.target.files?.[0]
-      if (selectedFile) setFile(selectedFile)
-    }}
-    className="hidden"
-  />
-</label>
+    <button
+      type="button"
+      onClick={handleButtonClick}
+      className="flex items-center justify-center duration-200 h-11 aspect-square border rounded-md outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
+    >
+      <FiUpload className="text-gray-600" />
+    </button>
+    <input
+      type="file"
+      accept="image/*"
+      ref={fileInputRef}
+      onChange={handleFileChange}
+      className="hidden"
+    />
+    </div>
         <button
           onClick={sendMessage}
           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 duration-200 font-bold whitespace-nowrap outline-none duration-200 focus:bg-blue-700"
