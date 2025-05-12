@@ -4,14 +4,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 
-// ✅ 型注釈：params はこの形で渡される
+// ✅ 型注釈：params は Promise で渡される
 type Props = {
-  params: {
-    id: string
-  }
+  params: Promise<{ id: string }>
 }
 
-// ✅ 静的生成対象のパスを生成（型を明示）
+// ✅ generateStaticParams（問題なし、修正不要）
 export async function generateStaticParams(): Promise<Array<{ id: string }>> {
   const { data, error } = await supabase.from('articles').select('id')
 
@@ -22,12 +20,14 @@ export async function generateStaticParams(): Promise<Array<{ id: string }>> {
   }))
 }
 
-// ✅ ページ本体
+// ✅ ページ本体（params を await で受け取る）
 export default async function ArticleDetail({ params }: Props) {
+  const { id } = await params // ← ここがキモ
+
   const { data, error } = await supabase
     .from('articles')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single()
 
   if (error || !data) {
