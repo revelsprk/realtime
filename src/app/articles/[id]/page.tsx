@@ -1,7 +1,7 @@
 // app/articles/[id]/page.tsx
 import { supabase } from '@/lib/supabase'
-import Image from 'next/image'
 import Link from 'next/link'
+import { FiHelpCircle, FiHome } from 'react-icons/fi'
 import ReactMarkdown from 'react-markdown'
 
 // ✅ 型注釈：params は Promise で渡される
@@ -35,11 +35,10 @@ export default async function ArticleDetail({ params }: Props) {
   }
 
   return (
-    <div className="max-w-md md:mx-auto mb-8 mx-4">
-      <header className="flex justify-center bg-white sticky top-0 py-4">
-        <Link href="/">
-          <Image src="/logo.svg" alt="Mukakin TV" width={100} height={100} className="w-48 h-fit select-none" />
-        </Link>
+    <div className="max-w-md md:mx-auto my-8 mx-4">
+            <header className="flex items-center bg-white mb-4">
+        <Link href="/" className="rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHome /></div></Link>
+        <Link href="/" className="ml-auto rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHelpCircle /></div></Link>
       </header>
       <h1 className="text-2xl font-bold mb-2">{data.title}</h1>
       <p className="text-sm text-gray-400 mb-6">
