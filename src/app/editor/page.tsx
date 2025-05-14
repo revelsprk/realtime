@@ -9,6 +9,7 @@ import Link from 'next/link'
 export default function MarkdownEditor() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [tab, setTab] = useState<'edit' | 'preview'>('edit') // ← タブ状態を管理
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   function handleUploadClick() {
@@ -53,16 +54,23 @@ export default function MarkdownEditor() {
       alert('記事を投稿しました')
       setTitle('')
       setContent('')
+      setTab('edit')
     }
   }
 
   return (
     <div className="max-w-md md:mx-auto my-8 mx-4">
       <header className="flex items-center bg-white mb-4">
-        <Link href="/" className="rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHome /></div></Link>
-        <Link href="/" className="ml-auto rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHelpCircle /></div></Link>
+        <Link href="/articles" className="rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200">
+          <div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHome /></div>
+        </Link>
+        <Link href="/" className="ml-auto rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200">
+          <div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHelpCircle /></div>
+        </Link>
       </header>
-      <h1 className="text-2xl font-bold mb-2">Markdown Editor</h1>
+
+      <h1 className="text-2xl font-bold mb-4">Markdown Editor</h1>
+
       <input
         type="text"
         placeholder="タイトル"
@@ -70,11 +78,10 @@ export default function MarkdownEditor() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-
-      <div className="flex mb-6">
-        <button onClick={handleUploadClick} className="flex items-center gap-2 px-4 py-2 border rounded-md shadow-sm w-full justify-center outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400 whitespace-nowrap">
+      <div className="flex mb-4">
+        <button onClick={handleUploadClick} className="flex items-center gap-2 px-4 py-2 border rounded-md shadow-sm w-full justify-center outline-none duration-200 focus:ring-2 ring-offset-2 whitespace-nowrap">
           <FiUpload />
-          画像アップロード
+          Upload Image
         </button>
         <input
           type="file"
@@ -85,24 +92,40 @@ export default function MarkdownEditor() {
         />
       </div>
 
-      <textarea
-        className="w-full h-64 border p-4 rounded-md mb-2 outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="Markdownを入力..."
-      />
+      <div className="flex">
+        <button
+          onClick={() => setTab('edit')}
+          className={`flex-1 px-4 py-2 rounded-md font-semibold rounded-b-none outline-none focus:ring-2 ring-offset-2 focus:z-10 duration-200 ${tab === 'edit' ? 'bg-primary text-white' : 'bg-white'}`}
+        >
+          Edit
+        </button>
+        <button
+          onClick={() => setTab('preview')}
+          className={`flex-1 px-4 py-2 rounded-md font-semibold rounded-b-none outline-none focus:ring-2 ring-offset-2 focus:z-10 duration-200 ${tab === 'preview' ? 'bg-primary text-white' : 'bg-white'}`}
+        >
+          Preview
+        </button>
+      </div>
+
+      {tab === 'edit' ? (
+        <textarea
+          className="w-full h-96 border p-4 rounded-md rounded-tl-none mb-4 outline-none duration-200 focus:ring-2 ring-blue-200 focus:border-blue-400"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          placeholder="Markdownを入力..."
+        />
+      ) : (
+        <div className="prose max-w-none mb-4 bg-white rounded-tr-none p-4 border rounded-md h-96 overflow-y-auto">
+          <ReactMarkdown>{content}</ReactMarkdown>
+        </div>
+      )}
 
       <button
         onClick={handleSubmit}
-        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 duration-200 font-bold whitespace-nowrap outline-none duration-200 focus:bg-blue-700 w-full"
+        className="bg-gray-950 text-white px-4 py-2 rounded-md duration-200 font-bold whitespace-nowrap outline-none duration-200 focus:ring-2 ring-offset-2 w-full"
       >
-        投稿
+        Publish
       </button>
-
-      <h2 className="text-xl font-semibold mt-8">Preview</h2>
-      <div className="prose max-w-none mt-2 bg-white p-4 border rounded">
-        <ReactMarkdown>{content}</ReactMarkdown>
-      </div>
     </div>
   )
 }

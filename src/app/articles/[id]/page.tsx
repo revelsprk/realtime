@@ -36,8 +36,8 @@ export default async function ArticleDetail({ params }: Props) {
 
   return (
     <div className="max-w-md md:mx-auto my-8 mx-4">
-            <header className="flex items-center bg-white mb-4">
-        <Link href="/" className="rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHome /></div></Link>
+      <header className="flex items-center bg-white mb-4">
+        <Link href="/articles" className="rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHome /></div></Link>
         <Link href="/" className="ml-auto rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200"><div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHelpCircle /></div></Link>
       </header>
       <h1 className="text-2xl font-bold mb-2">{data.title}</h1>
