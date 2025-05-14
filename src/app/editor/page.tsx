@@ -64,7 +64,7 @@ export default function MarkdownEditor() {
         <Link href="/articles" className="rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200">
           <div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHome /></div>
         </Link>
-        <Link href="/" className="ml-auto rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200">
+        <Link href="/helps#articles" className="ml-auto rounded-full outline-none ring-blue-200 focus:ring-2 ring-offset-2 duration-200">
           <div className="w-8 aspect-square border rounded-full flex items-center justify-center"><FiHelpCircle /></div>
         </Link>
       </header>
