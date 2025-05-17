@@ -33,8 +33,8 @@ export default function ArticleList() {
 
   return (
     <div className="max-w-md md:mx-auto mb-8 mx-4">
-            <header className="flex justify-center bg-white sticky top-0 py-4">
-        <Link href="/"><Image src="/logo.svg" alt='Mukakin TV' width={100} height={100} className="w-48 h-fit select-none" /></Link>
+      <header className="flex justify-center sticky top-0 py-4">
+        <Link href="/"><Image src="/logo.svg" alt='Mukakin TV' width={100} height={100} className="w-64 drop-shadow-lg h-fit select-none" /></Link>
       </header>
       <div className="flex justify-center my-4">
         <Link href="/editor"><div className="w-10 aspect-square border rounded-full flex items-center justify-center text-xl text-gray-400"><FaPlus /></div></Link>
